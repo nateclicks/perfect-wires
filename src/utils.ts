@@ -1,3 +1,10 @@
+interface Box {
+  x: number;
+  y: number;
+  h: number;
+  w: number;
+}
+
 /**
  * Return the distance between two points
  * @param  {number} pointX0 - X-coord of first point
@@ -13,6 +20,20 @@
 //     return Math.hypot(pointY1 - pointY0, pointX1 - pointX0);
 // }
 
+/**
+ * @param  {Box} b1
+ * @param  {Box} b2
+ */
+export function getWirePath(b1: Box, b2: Box): string {
+  const b1CenterX = b1.x + b1.w / 2;
+  const b1CenterY = b1.y + b1.h / 2;
+  const b2CenterX = b2.x + b2.w / 2;
+  const b2CenterY = b2.y + b2.h / 2;
+  const path = `M${b1CenterX},${b1CenterY} L${b2CenterX},${b2CenterY}`;
+  console.log(path);
+
+  return path;
+}
 /**
  * @param  {number} pointX0 - X-coord of first point
  * @param  {number} pointY0 - Y-coord of first point

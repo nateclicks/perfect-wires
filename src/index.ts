@@ -1,3 +1,3 @@
-import { getWire } from './utils';
+import { getWire, getWirePath } from './utils';
 
-export { getWire };
+export { getWire, getWirePath };
