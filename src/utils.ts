@@ -25,13 +25,54 @@ interface Box {
  * @param  {Box} b2
  */
 export function getWirePath(b1: Box, b2: Box): string {
-  const b1CenterX = b1.x + b1.w / 2;
-  const b1CenterY = b1.y + b1.h / 2;
-  const b2CenterX = b2.x + b2.w / 2;
-  const b2CenterY = b2.y + b2.h / 2;
-  const path = `M${b1CenterX},${b1CenterY} L${b2CenterX},${b2CenterY}`;
-  console.log(path);
+  let p1x = b1.x + b1.w;
+  let p1y = b1.y + b1.h / 2;
+  let p2x = b2.x + b2.w / 2;
+  let p2y = b2.y + b2.h;
+  console.log(b2);
 
+  switch (quadrant(b1.x, b1.y, b2.x, b2.y)) {
+    case 1:
+      console.log('1');
+      p1x = b1.x;
+      p1y = b1.y + b1.h / 2;
+      p2x = b2.x + b2.w / 2;
+      p2y = b2.y + b2.h;
+
+      break;
+    case 2:
+      console.log('2');
+      p1x = b1.x + b1.w;
+      p1y = b1.y + b1.h / 2;
+      p2x = b2.x + b2.w / 2;
+      p2y = b2.y + b2.h;
+      break;
+    case 3:
+      console.log('3');
+      p1x = b1.x;
+      p1y = b1.y + b1.h / 2;
+      p2x = b2.x + b2.w / 2;
+      p2y = b2.y + b2.h;
+      break;
+    case 4:
+      console.log('4');
+      p1x = b1.x + b1.w;
+      p1y = b1.y + b1.h / 2;
+      p2x = b2.x + b2.w / 2;
+      p2y = b2.y + b2.h;
+      break;
+    default:
+      console.log('default');
+  }
+
+  let [sx, sy, ex, ey, r1, r2, d, bax, bay, eax, eay] = getWire(
+    p1x,
+    p1y,
+    p2x,
+    p2y
+  );
+  const path = `M${sx},${sy} L${bax},${bay} a ${r1},${r2} 90 0 ${d} ${eax},${eay} L${ex},${ey}`;
+  // console.log(path);
   return path;
 }
 /**
