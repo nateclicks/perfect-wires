@@ -7,3 +7,9 @@ describe('getWire', () => {
     );
   });
 });
+
+describe('getWire', () => {
+  it('works 0,0,0,0', () => {
+    expect(getWire(0, 0, 0, 0)).toEqual('M0,0 L0,0 a 0,0 90 0 1 0,0 L0,0');
+  });
+});
