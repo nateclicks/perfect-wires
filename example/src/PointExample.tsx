@@ -1,9 +1,10 @@
 import React from 'react';
 import { getWire } from 'perfect-wires';
+import SectorBackground from './SectorBackground';
 
 export default function PointExample() {
   const ref = React.useRef<HTMLElement>(null);
-  const [p1, setP1] = React.useState({ x: 400, y: 400 });
+  const [p1] = React.useState({ x: 400, y: 400 });
   const [p2, setP2] = React.useState({ x: 500, y: 500 });
 
   const dotColor = '#F700FF';
@@ -20,6 +21,7 @@ export default function PointExample() {
           height: 800,
           border: `.375rem solid ${outlineColor}`,
           borderRadius: '1rem',
+          boxSizing: 'border-box',
         }}
         onClick={e => {
           const { pageX, pageY } = e;
@@ -42,6 +44,7 @@ export default function PointExample() {
         fill={dotColor}
         strokeWidth={3}
       >
+        <SectorBackground></SectorBackground>
         <path name="wire" d={path} strokeWidth={5} fill="none" />
         <circle name="start-circle" cx={p1.x} cy={p1.y} r={5} />
         <circle name="end-circle" cx={p2.x} cy={p2.y} r={5} />

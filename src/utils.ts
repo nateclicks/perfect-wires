@@ -1,18 +1,12 @@
+import { Box } from './Box';
 const PI = Math.PI;
-
-interface Box {
-  x: number;
-  y: number;
-  h: number;
-  w: number;
-}
 
 /**
  * @param  {number} angle, in radians
  * @param  {number} segments number of segments to use. Default value is 8 (octant)
  */
 export function getSector(angle: number, segments = 8): number {
-  if (angle != PI) {
+  if (angle !== PI) {
     return Math.floor(segments * (0.5 + ((angle / (PI * 2)) % segments)));
   }
   return segments - 1;
@@ -35,96 +29,90 @@ export function getAngle(
 }
 
 /**
- * @param  {Box} b1
- * @param  {Box} b2
+ * @param  {Box} sBox - The box to start the wire from
+ * @param  {Box} eBox - The box to end the wire at
  */
-export function getWirePath(b1: Box, b2: Box): string {
-  let p1x = b1.x + b1.w;
-  let p1y = b1.y + b1.h / 2;
-  let p2x = b2.x + b2.w / 2;
-  let p2y = b2.y + b2.h;
+export function getBoxToBoxWire(sBox: Box, eBox: Box): string {
+  let p1x = 0;
+  let p1y = 0;
+  let p2x = 0;
+  let p2y = 0;
 
-  const b1Top = { x: b1.x + b1.w / 2, y: b1.y };
-  const b1Bottom = { x: b1.x + b1.w / 2, y: b1.y + b1.h };
-  const b1Left = { x: b1.x, y: b1.y + b1.h / 2 };
-  const b1Right = { x: b1.x + b1.w, y: b1.y + b1.h / 2 };
+  sBox.cx = sBox.x + sBox.w / 2;
+  sBox.cy = sBox.y + sBox.h / 2;
+  eBox.cx = eBox.x + eBox.w / 2;
+  eBox.cy = eBox.y + eBox.h / 2;
 
-  const b2Top = { x: b2.x + b2.w / 2, y: b2.y };
-  const b2Bottom = { x: b2.x + b2.w / 2, y: b2.y + b2.h };
-  const b2Left = { x: b2.x, y: b2.y + b2.h / 2 };
-  const b2Right = { x: b2.x + b2.w, y: b2.y + b2.h / 2 };
+  const sBoxTop = { x: sBox.cx, y: sBox.y };
+  const sBoxBottom = { x: sBox.cx, y: sBox.y + sBox.h };
+  const sBoxLeft = { x: sBox.x, y: sBox.cy };
+  const sBoxRight = { x: sBox.x + sBox.w, y: sBox.cy };
 
-  const angle = getAngle(
-    b1.x + b1.w / 2,
-    b1.y + b1.h / 2,
-    b2.x + b2.w / 2,
-    b2.y + b2.h / 2
-  );
+  const eBoxTop = { x: eBox.cx, y: eBox.y };
+  const eBoxBottom = { x: eBox.cx, y: eBox.y + eBox.h };
+  const eBoxLeft = { x: eBox.x, y: eBox.cy };
+  const eBoxRight = { x: eBox.x + eBox.w, y: eBox.cy };
+
+  // get the angle between the center points of each box
+  const angle = getAngle(sBox.cx, sBox.cy, eBox.cx, eBox.cy);
 
   const sector = getSector(angle);
 
   switch (sector) {
     case 0:
-      p1x = b1Left.x;
-      p1y = b1Left.y;
-      p2x = b2Bottom.x;
-      p2y = b2Bottom.y;
+      p1x = sBoxLeft.x;
+      p1y = sBoxLeft.y;
+      p2x = eBoxBottom.x;
+      p2y = eBoxBottom.y;
       break;
     case 1:
-      p1x = b1Top.x;
-      p1y = b1Top.y;
-      p2x = b2Right.x;
-      p2y = b2Right.y;
+      p1x = sBoxTop.x;
+      p1y = sBoxTop.y;
+      p2x = eBoxRight.x;
+      p2y = eBoxRight.y;
       break;
     case 2:
-      p1x = b1.x + b1.w / 2;
-      p1y = b1.y;
-      p2x = b2.x;
-      p2y = b2.y + b2.h / 2;
+      p1x = sBox.x + sBox.w / 2;
+      p1y = sBox.y;
+      p2x = eBox.x;
+      p2y = eBox.y + eBox.h / 2;
       break;
     case 3:
-      p1x = b1.x + b1.w;
-      p1y = b1.y + b1.h / 2;
-      p2x = b2.x + b2.w / 2;
-      p2y = b2.y + b2.h;
+      p1x = sBox.x + sBox.w;
+      p1y = sBox.y + sBox.h / 2;
+      p2x = eBox.x + eBox.w / 2;
+      p2y = eBox.y + eBox.h;
       break;
     case 4:
-      p1x = b1.x + b1.w;
-      p1y = b1.y + b1.h / 2;
-      p2x = b2.x + b2.w / 2;
-      p2y = b2.y;
+      p1x = sBox.x + sBox.w;
+      p1y = sBox.y + sBox.h / 2;
+      p2x = eBox.x + eBox.w / 2;
+      p2y = eBox.y;
       break;
     case 5:
-      p1x = b1Bottom.x;
-      p1y = b1Bottom.y;
-      p2x = b2Left.x;
-      p2y = b2Left.y;
+      p1x = sBoxBottom.x;
+      p1y = sBoxBottom.y;
+      p2x = eBoxLeft.x;
+      p2y = eBoxLeft.y;
       break;
     case 6:
-      p1x = b1Bottom.x;
-      p1y = b1Bottom.y;
-      p2x = b2Right.x;
-      p2y = b2Right.y;
+      p1x = sBoxBottom.x;
+      p1y = sBoxBottom.y;
+      p2x = eBoxRight.x;
+      p2y = eBoxRight.y;
       break;
     case 7:
-      p1x = b1Left.x;
-      p1y = b1Left.y;
-      p2x = b2Top.x;
-      p2y = b2Top.y;
+      p1x = sBoxLeft.x;
+      p1y = sBoxLeft.y;
+      p2x = eBoxTop.x;
+      p2y = eBoxTop.y;
       break;
     default:
       console.log(angle);
       console.log(getSector(angle));
   }
 
-  // let [sx, sy, ex, ey, r1, r2, d, bax, bay, eax, eay] = getWire(
-  //   p1x,
-  //   p1y,
-  //   p2x,
-  //   p2y
-  // );
-  const path = getWire(p1x, p1y, p2x, p2y);
-  // const path = `M${sx},${sy} L${bax},${bay} a ${r1},${r2} 90 0 ${d} ${eax},${eay} L${ex},${ey}`;
+  const path = getWire(p1x, p1y, p2x, p2y, sector);
 
   return path;
 }
@@ -140,7 +128,8 @@ export function getWire(
   sx: number,
   sy: number,
   ex: number,
-  ey: number
+  ey: number,
+  sector: number = getSector(getAngle(sx, sy, ex, ey))
 ): string {
   const dx = Math.abs(ex - sx);
   const dy = Math.abs(ey - sy);
@@ -159,9 +148,6 @@ export function getWire(
   let r2: number = r1;
   let eax = r1;
   let eay = r1;
-
-  const angle = getAngle(sx, sy, ex, ey);
-  const sector = getSector(angle);
 
   switch (sector) {
     case 0:

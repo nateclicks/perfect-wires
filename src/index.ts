@@ -1,3 +1,4 @@
-import { getWire } from './utils';
+import { getWire, getBoxToBoxWire } from './utils';
+import { Box } from './Box';
 
-export { getWire };
+export { getWire, getBoxToBoxWire, Box };
