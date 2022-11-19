@@ -1,4 +1,5 @@
 import { Box } from './Box';
+import { WireOptions } from './WireOptions';
 const PI = Math.PI;
 
 /**
@@ -28,11 +29,40 @@ export function getAngle(
   return Math.atan2(y1 - y0, x1 - x0);
 }
 
+function makeStraightLine(sBox: Box, eBox: Box, deadZone = 0): boolean {
+  let straight: boolean;
+  console.log({ deadZone });
+
+  // console.log({ sBox, eBox });
+
+  const xDiff = Math.abs(sBox.cx! - eBox.cx!);
+  const yDiff = Math.abs(sBox.cy! - eBox.cy!);
+  // console.log({ xDiff });
+  // console.log({ yDiff });
+
+  if (xDiff <= eBox.w / 2 - deadZone || yDiff <= eBox.h / 2 - deadZone) {
+    straight = true;
+  } else {
+    straight = false;
+  }
+
+  // console.log({ straight });
+
+  return straight;
+}
+
 /**
  * @param  {Box} sBox - The box to start the wire from
  * @param  {Box} eBox - The box to end the wire at
  */
-export function getBoxToBoxWire(sBox: Box, eBox: Box): string {
+export function getBoxToBoxWire(
+  sBox: Box,
+  eBox: Box,
+  options: WireOptions = {} as WireOptions
+): string {
+  const { deadZone = 0 } = options;
+  console.log(options);
+
   let p1x = 0;
   let p1y = 0;
   let p2x = 0;
@@ -42,6 +72,8 @@ export function getBoxToBoxWire(sBox: Box, eBox: Box): string {
   sBox.cy = sBox.y + sBox.h / 2;
   eBox.cx = eBox.x + eBox.w / 2;
   eBox.cy = eBox.y + eBox.h / 2;
+
+  const straight: boolean = makeStraightLine(sBox, eBox, options.deadZone);
 
   const sBoxTop = { x: sBox.cx, y: sBox.y };
   const sBoxBottom = { x: sBox.cx, y: sBox.y + sBox.h };
@@ -57,64 +89,101 @@ export function getBoxToBoxWire(sBox: Box, eBox: Box): string {
   const angle = getAngle(sBox.cx, sBox.cy, eBox.cx, eBox.cy);
 
   const sector = getSector(angle);
+  console.log(sector);
 
-  switch (sector) {
-    case 0:
-      p1x = sBoxLeft.x;
-      p1y = sBoxLeft.y;
-      p2x = eBoxBottom.x;
-      p2y = eBoxBottom.y;
-      break;
-    case 1:
-      p1x = sBoxTop.x;
-      p1y = sBoxTop.y;
-      p2x = eBoxRight.x;
-      p2y = eBoxRight.y;
-      break;
-    case 2:
-      p1x = sBox.x + sBox.w / 2;
-      p1y = sBox.y;
-      p2x = eBox.x;
-      p2y = eBox.y + eBox.h / 2;
-      break;
-    case 3:
-      p1x = sBox.x + sBox.w;
-      p1y = sBox.y + sBox.h / 2;
-      p2x = eBox.x + eBox.w / 2;
-      p2y = eBox.y + eBox.h;
-      break;
-    case 4:
-      p1x = sBox.x + sBox.w;
-      p1y = sBox.y + sBox.h / 2;
-      p2x = eBox.x + eBox.w / 2;
-      p2y = eBox.y;
-      break;
-    case 5:
-      p1x = sBoxBottom.x;
-      p1y = sBoxBottom.y;
-      p2x = eBoxLeft.x;
-      p2y = eBoxLeft.y;
-      break;
-    case 6:
-      p1x = sBoxBottom.x;
-      p1y = sBoxBottom.y;
-      p2x = eBoxRight.x;
-      p2y = eBoxRight.y;
-      break;
-    case 7:
-      p1x = sBoxLeft.x;
-      p1y = sBoxLeft.y;
-      p2x = eBoxTop.x;
-      p2y = eBoxTop.y;
-      break;
-    default:
-      console.log(angle);
-      console.log(getSector(angle));
+  if (straight) {
+    switch (sector) {
+      case 0:
+      case 7:
+        p1x = sBoxLeft.x;
+        p1y = sBoxLeft.y;
+        p2x = eBoxRight.x;
+        p2y = sBox.cy;
+        break;
+      case 1:
+      case 2:
+        p1x = sBoxTop.x;
+        p1y = sBoxTop.y;
+        p2x = sBox.cx;
+        p2y = eBoxBottom.y;
+        break;
+      case 3:
+      case 4:
+        p1x = sBoxRight.x;
+        p1y = sBoxRight.y;
+        p2x = eBoxLeft.x;
+        p2y = sBox.cy;
+        break;
+      case 5:
+      case 6:
+        p1x = sBoxBottom.x;
+        p1y = sBoxBottom.y;
+        p2x = sBox.cx;
+        p2y = eBoxTop.y;
+        break;
+    }
+    const path = getWire(p1x, p1y, p2x, p2y, sector, straight);
+
+    return path;
+  } else {
+    switch (sector) {
+      case 0:
+        p1x = sBoxLeft.x;
+        p1y = sBoxLeft.y;
+        p2x = eBoxBottom.x;
+        p2y = eBoxBottom.y;
+        break;
+      case 1:
+        p1x = sBoxTop.x;
+        p1y = sBoxTop.y;
+        p2x = eBoxRight.x;
+        p2y = eBoxRight.y;
+        break;
+      case 2:
+        p1x = sBox.x + sBox.w / 2;
+        p1y = sBox.y;
+        p2x = eBox.x;
+        p2y = eBox.y + eBox.h / 2;
+        break;
+      case 3:
+        p1x = sBox.x + sBox.w;
+        p1y = sBox.y + sBox.h / 2;
+        p2x = eBox.x + eBox.w / 2;
+        p2y = eBox.y + eBox.h;
+        break;
+      case 4:
+        p1x = sBox.x + sBox.w;
+        p1y = sBox.y + sBox.h / 2;
+        p2x = eBox.x + eBox.w / 2;
+        p2y = eBox.y;
+        break;
+      case 5:
+        p1x = sBoxBottom.x;
+        p1y = sBoxBottom.y;
+        p2x = eBoxLeft.x;
+        p2y = eBoxLeft.y;
+        break;
+      case 6:
+        p1x = sBoxBottom.x;
+        p1y = sBoxBottom.y;
+        p2x = eBoxRight.x;
+        p2y = eBoxRight.y;
+        break;
+      case 7:
+        p1x = sBoxLeft.x;
+        p1y = sBoxLeft.y;
+        p2x = eBoxTop.x;
+        p2y = eBoxTop.y;
+        break;
+      default:
+        console.log(angle);
+        console.log(getSector(angle));
+    }
+
+    const path = getWire(p1x, p1y, p2x, p2y, sector);
+
+    return path;
   }
-
-  const path = getWire(p1x, p1y, p2x, p2y, sector);
-
-  return path;
 }
 
 /**
@@ -129,7 +198,8 @@ export function getWire(
   sy: number,
   ex: number,
   ey: number,
-  sector: number = getSector(getAngle(sx, sy, ex, ey))
+  sector: number = getSector(getAngle(sx, sy, ex, ey)),
+  straight: boolean = false
 ): string {
   const dx = Math.abs(ex - sx);
   const dy = Math.abs(ey - sy);
@@ -149,72 +219,77 @@ export function getWire(
   let eax = r1;
   let eay = r1;
 
-  switch (sector) {
-    case 0:
-      bax = ex + r1;
-      bay = sy;
-      eax = -r1;
-      eay = -r1;
-      d = 1;
-      break;
-    case 1:
-      bax = sx;
-      bay = ey + r1;
-      eax = -r1;
-      eay = -r1;
-      d = 0;
-      break;
-    case 2:
-      bax = sx;
-      bay = ey + r1;
-      eax = r1;
-      eay = -r1;
-      d = 1;
-      break;
-    case 3:
-      bax = ex - r1;
-      bay = sy;
-      eax = r1;
-      eay = -r1;
-      d = 0;
-      break;
-    case 4:
-      bax = ex - r1;
-      bay = sy;
-      eax = r1;
-      eay = r1;
-      d = 1;
-      break;
-    case 5:
-      bax = sx;
-      bay = ey - r1;
-      eax = r1;
-      eay = r1;
-      d = 0;
-      break;
-    case 6:
-      bax = sx;
-      bay = ey - r1;
-      eax = -r1;
-      eay = r1;
-      d = 1;
-      break;
-    case 7:
-      bax = ex + r1;
-      bay = sy;
-      eax = -r1;
-      eay = r1;
-      d = 0;
-      break;
-    default:
-      console.log('default');
-      bax = ex + r1;
-      bay = sy;
-      eax = -r1;
-      eay = -r1;
-      d = 1;
+  if (!straight) {
+    switch (sector) {
+      case 0:
+        bax = ex + r1;
+        bay = sy;
+        eax = -r1;
+        eay = -r1;
+        d = 1;
+        break;
+      case 1:
+        bax = sx;
+        bay = ey + r1;
+        eax = -r1;
+        eay = -r1;
+        d = 0;
+        break;
+      case 2:
+        bax = sx;
+        bay = ey + r1;
+        eax = r1;
+        eay = -r1;
+        d = 1;
+        break;
+      case 3:
+        bax = ex - r1;
+        bay = sy;
+        eax = r1;
+        eay = -r1;
+        d = 0;
+        break;
+      case 4:
+        bax = ex - r1;
+        bay = sy;
+        eax = r1;
+        eay = r1;
+        d = 1;
+        break;
+      case 5:
+        bax = sx;
+        bay = ey - r1;
+        eax = r1;
+        eay = r1;
+        d = 0;
+        break;
+      case 6:
+        bax = sx;
+        bay = ey - r1;
+        eax = -r1;
+        eay = r1;
+        d = 1;
+        break;
+      case 7:
+        bax = ex + r1;
+        bay = sy;
+        eax = -r1;
+        eay = r1;
+        d = 0;
+        break;
+      default:
+        console.log('default');
+        bax = ex + r1;
+        bay = sy;
+        eax = -r1;
+        eay = -r1;
+        d = 1;
+    }
+    const path = `M${sx},${sy} L${bax},${bay} a ${r1},${r2} 90 0 ${d} ${eax},${eay} L${ex},${ey}`;
+    return path;
   }
-  const path = `M${sx},${sy} L${bax},${bay} a ${r1},${r2} 90 0 ${d} ${eax},${eay} L${ex},${ey}`;
+
+  const path = `M${sx},${sy} L${ex},${ey}`;
   return path;
 }
 

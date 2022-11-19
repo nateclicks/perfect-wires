@@ -3,7 +3,17 @@ import React from 'react';
 import SectorBackground from './SectorBackground';
 
 export default function BoxExample() {
+  const fillColor = 'rgb(39, 51, 64)';
+  const outlineColor = '#fff';
+  const dotColor = '#F700FF';
+  const radius = 6;
+  const strokeWidth = radius;
+
   const ref = React.useRef<HTMLElement>(null);
+  const [transparent, setTransparent] = React.useState({
+    isTransparent: false,
+    color: fillColor,
+  });
   const [b1] = React.useState({
     x: 300,
     y: 350,
@@ -19,11 +29,16 @@ export default function BoxExample() {
     name: 'Box A',
   } as Box);
 
-  const outlineColor = '#fff';
-  const dotColor = '#F700FF';
-  const rectBG = '#15202b';
+  function updateTransparency() {
+    console.log(transparent);
+    if (transparent.isTransparent) {
+      setTransparent({ isTransparent: false, color: fillColor });
+    } else {
+      setTransparent({ isTransparent: true, color: 'none' });
+    }
+  }
 
-  const path = getBoxToBoxWire(b1, b2);
+  const path = getBoxToBoxWire(b1, b2, { deadZone: 2 });
 
   return (
     <section ref={ref}>
@@ -54,30 +69,55 @@ export default function BoxExample() {
           }));
         }}
         stroke={outlineColor}
-        fill={rectBG}
-        strokeWidth={5}
+        fill={transparent.color}
+        strokeWidth={strokeWidth}
       >
         <SectorBackground></SectorBackground>
-        <path name="wire" d={path} strokeWidth={5} stroke="white" fill="none" />
-        <rect name="b1" x={b1.x} y={b1.y} width={b1.w} height={b1.h} rx={8} />
+        <path name="wire" d={path} stroke="white" fill="none" />
+        <rect
+          name="b1"
+          x={b1.x}
+          y={b1.y}
+          width={b1.w}
+          height={b1.h}
+          rx={radius}
+        />
         <circle
           name="b1-center-point"
           cx={b1.x + b1.w / 2}
           cy={b1.y + b1.h / 2}
-          r={5}
+          r={radius}
           fill={dotColor}
           strokeWidth={3}
         />
-        <rect name="b2" x={b2.x} y={b2.y} width={b2.w} height={b2.h} rx={8} />
+        <rect
+          name="b2"
+          x={b2.x}
+          y={b2.y}
+          width={b2.w}
+          height={b2.h}
+          rx={radius}
+        />
         <circle
           name="b2-center-point"
           cx={b2.x + b2.w / 2}
           cy={b2.y + b2.h / 2}
-          r={5}
+          r={radius}
           fill={dotColor}
           strokeWidth={3}
         />
       </svg>
+      <div style={{ display: 'grid' }}>
+        <label>
+          <input
+            type="checkbox"
+            checked={transparent.isTransparent}
+            onChange={updateTransparency}
+          />
+          <span className="checkmark"></span>
+          Transparent
+        </label>
+      </div>
     </section>
   );
 }

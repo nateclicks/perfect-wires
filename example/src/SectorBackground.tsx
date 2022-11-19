@@ -1,18 +1,10 @@
 export default function SectorBackground() {
-  const opacity = `.1`;
+  const opacity = `.3`;
   return (
     <>
       <defs>
         <clipPath id="circle-clip">
-          <circle
-            name="c1"
-            cx="400"
-            cy="400"
-            r="400"
-            strokeWidth={1}
-            fill="none"
-            opacity={opacity}
-          />
+          <circle name="c1" cx="400" cy="400" r="400" fill="none" />
         </clipPath>
       </defs>
       <g
