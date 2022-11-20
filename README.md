@@ -25,11 +25,11 @@ The functions in this library return path data for an SVG path that you can use 
 ### `getWire()`
 Returns path data for use in and SVG `<path>` object
 
-#### Syntax
+#### __Syntax__
 ```ts
 getWire(sx, sy, ex, ey)
 ```
-### Parameters
+#### __Parameters__
 | Argument | Type   | Description                                                                 |
 | -------- | ------ | --------------------------------------------------------------------------- |
 | `sx`     | number | X-coordinate of the starting point.                                       |
@@ -38,7 +38,8 @@ getWire(sx, sy, ex, ey)
 | `ey`     | number | Y-coordinate of the end point.                                        |
 
 
-#### Returns
+#### __Returns__ 
+
 SVG Path data
 ```ts
 //Example
@@ -53,24 +54,25 @@ console.log(pathData);
 ### `getBoxToBoxWire()`
 Returns path data for use in and SVG `<path>` object
 
-#### Syntax
+#### __Syntax__
 ```ts
-getWire(sBox, eBox, options )
+getBoxToBoxWire(sBox, eBox, options )
 ```
-### Parameters
+#### __Parameters__
 | Argument | Type   | Description                                                                 |
 | -------- | ------ | --------------------------------------------------------------------------- |
 | `sBox`     | number | X-coordinate of the starting point.                                       |
 | `eBox`     | number | Y-coordinate of the starting point.                                       |
 | `options`     | WireOptions | Optional configuration for wiring                                       |
 
-### WireOptions
+#### __WireOptions__
 | Option     |  Type  |  Default   | Description                                                     |
 | ---------- | ------ | -- | --------------------------------------------------------------------------- |
 | `deadZone` | number  | 0 | Amount of space (padding) to use before creating a straight line between boxes. Useful when using boxes with rounded corners.                             |
 
 
-#### Returns
+### __Returns__
+
 SVG Path data
 ```ts
 //Example
