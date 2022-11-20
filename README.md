@@ -3,6 +3,7 @@
 
 ## Functions 
 `getWire` - for wires between points
+`getBoxToBoxWire` - for wires between boxes
 
 ## Installation
 
@@ -18,6 +19,8 @@ yarn add perfect-wires
 
 ## Usage
 The functions in this library return path data for an SVG path that you can use to draw a wire. It only provides the data for the path.
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/nateUX/perfect-wires/tree/master/example)
 
 ### `getWire()`
 Returns path data for use in and SVG `<path>` object
@@ -46,6 +49,52 @@ console.log(pathData);
 'M400,400 L400,450 a 50,50 90 0 0 50,50 L500,500'
 
 ```
+
+### `getBoxToBoxWire()`
+Returns path data for use in and SVG `<path>` object
+
+#### Syntax
+```ts
+getWire(sBox, eBox, options )
+```
+### Parameters
+| Argument | Type   | Description                                                                 |
+| -------- | ------ | --------------------------------------------------------------------------- |
+| `sBox`     | number | X-coordinate of the starting point.                                       |
+| `eBox`     | number | Y-coordinate of the starting point.                                       |
+| `options`     | WireOptions | Optional configuration for wiring                                       |
+
+### WireOptions
+| Option     |  Type  |  Default   | Description                                                     |
+| ---------- | ------ | -- | --------------------------------------------------------------------------- |
+| `deadZone` | number  | 0 | Amount of space (padding) to use before creating a straight line between boxes. Useful when using boxes with rounded corners.                             |
+
+
+#### Returns
+SVG Path data
+```ts
+//Example
+const box1: Box = {
+    x: 300,
+    y: 350,
+    h: 100,
+    w: 200
+  };
+  const box2: Box = {
+    x: 550,
+    y: 500,
+    h: 100,
+    w: 150
+  };
+
+const pathData = getBoxToBoxWire(box1, box2, {deadZone: 5});
+console.log(pathData);
+
+///Returns
+'M500,400 L575,400 a 50,50 90 0 1 50,50 L625,500'
+```
+
+
 
 ## Contributing
 This library is still working towards something more stable. Currently not accepting in contribution, but feel free to [create an issue](https://github.com/nateUX/perfect-wires/issues/new/choose). 
