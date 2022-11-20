@@ -1,4 +1,4 @@
-import { getBoxToBoxWire, Box, WireOptions } from '../src';
+import { getBoxToBoxWire, Box } from '../src';
 
 describe('getBoxToBoxWire', () => {
   const box1: Box = {

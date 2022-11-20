@@ -53,9 +53,8 @@ function makeStraightLine(sBox: Box, eBox: Box, deadZone = 0): boolean {
 export function getBoxToBoxWire(
   sBox: Box,
   eBox: Box,
-  options: WireOptions = {} as WireOptions
+  options: WireOptions = { deadZone: 0 } as WireOptions
 ): string {
-  const { deadZone = 0 } = options;
   console.log(options);
 
   let p1x = 0;
