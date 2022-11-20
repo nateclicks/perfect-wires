@@ -1,0 +1,20 @@
+{
+  "name": "perfect-wires",
+  "entries": [
+    {
+      "date": "Sun, 20 Nov 2022 12:25:00 GMT",
+      "tag": "perfect-wires_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "none": [
+          {
+            "author": "stock50nm@hotmail.com",
+            "package": "perfect-wires",
+            "commit": "dff5fec13b3aaae53e4ac01b65021c261ee74bb7",
+            "comment": "adding beachball"
+          }
+        ]
+      }
+    }
+  ]
+}
