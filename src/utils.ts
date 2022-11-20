@@ -33,12 +33,8 @@ function makeStraightLine(sBox: Box, eBox: Box, deadZone = 0): boolean {
   let straight: boolean;
   console.log({ deadZone });
 
-  // console.log({ sBox, eBox });
-
   const xDiff = Math.abs(sBox.cx! - eBox.cx!);
   const yDiff = Math.abs(sBox.cy! - eBox.cy!);
-  // console.log({ xDiff });
-  // console.log({ yDiff });
 
   if (xDiff <= eBox.w / 2 - deadZone || yDiff <= eBox.h / 2 - deadZone) {
     straight = true;
@@ -46,21 +42,19 @@ function makeStraightLine(sBox: Box, eBox: Box, deadZone = 0): boolean {
     straight = false;
   }
 
-  // console.log({ straight });
-
   return straight;
 }
 
 /**
  * @param  {Box} sBox - The box to start the wire from
  * @param  {Box} eBox - The box to end the wire at
+ * @param {WireOptions} options - wiring options
  */
 export function getBoxToBoxWire(
   sBox: Box,
   eBox: Box,
-  options: WireOptions = {} as WireOptions
+  options: WireOptions = { deadZone: 0 } as WireOptions
 ): string {
-  const { deadZone = 0 } = options;
   console.log(options);
 
   let p1x = 0;
