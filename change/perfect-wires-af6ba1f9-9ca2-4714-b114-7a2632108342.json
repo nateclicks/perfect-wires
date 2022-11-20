@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "cleaning up api and updating docs with examples",
+  "packageName": "perfect-wires",
+  "email": "mitchell.nathaniel@gmail.com",
+  "dependentChangeType": "patch"
+}
