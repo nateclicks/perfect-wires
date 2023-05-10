@@ -99,7 +99,7 @@ console.log(pathData);
 
 
 ## Contributing
-This library is still working towards something more stable. Currently not accepting in contribution, but feel free to [create an issue](https://github.com/nateclicks/perfect-wires/issues/new/choose). 
+This library is still a work in progress. Currently not accepting contributions, but feel free to [create an issue](https://github.com/nateclicks/perfect-wires/issues/new/choose). 
 
 ## Author
 

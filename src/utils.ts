@@ -79,7 +79,7 @@ export function getBoxToBoxWire(
   const eBoxLeft = { x: eBox.x, y: eBox.cy };
   const eBoxRight = { x: eBox.x + eBox.w, y: eBox.cy };
 
-  // get the angle between the center points of each box
+  // Get the angle between the center points of each box
   const angle = getAngle(sBox.cx, sBox.cy, eBox.cx, eBox.cy);
 
   const sector = getSector(angle);
