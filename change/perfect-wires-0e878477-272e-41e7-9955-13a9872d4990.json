@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "updating docs",
+  "packageName": "perfect-wires",
+  "email": "nate@nateclicks.com",
+  "dependentChangeType": "patch"
+}
