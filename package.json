@@ -57,7 +57,7 @@
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^8.1.0",
-    "beachball": "^2.31.5",
+    "beachball": "^2.32.2",
     "husky": "^8.0.1",
     "size-limit": "^8.1.0",
     "tsdx": "^0.14.1",
