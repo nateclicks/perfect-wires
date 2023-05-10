@@ -20,7 +20,7 @@ yarn add perfect-wires
 ## Usage
 The functions in this library return path data for an SVG path that you can use to draw a wire. It only provides the data for the path.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/nateclicks/perfect-wires/tree/master/example)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/nateclicks/perfect-wires/tree/main/example)
 
 ### `getWire()`
 Returns path data for use in and SVG `<path>` object
